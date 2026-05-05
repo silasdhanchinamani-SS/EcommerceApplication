@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | ShopEase</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #8b5cf6;
+        --primary-dark: #7c3aed;
+        --secondary: #ec4899;
+        --accent: #f59e0b;
+        --bg-dark: #0f172a;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --success: #10b981;
+        --danger: #ef4444;
+        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Outfit", sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+        color: var(--text-main);
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 5%;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--glass-border);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .logo i {
+        font-size: 2rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .logo h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+        background: linear-gradient(to right, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .logout-btn {
+        padding: 10px 24px;
+        border-radius: 12px;
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .logout-btn:hover {
+        background: #ef4444;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 5%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .page-header {
+        margin-bottom: 4rem;
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 100px;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .page-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        letter-spacing: -1.5px;
+      }
+
+      .admin-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        width: 100%;
+        max-width: 1000px;
+      }
+
+      .admin-action {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 32px;
+        padding: 3rem 2rem;
+        text-decoration: none;
+        color: white;
+        transition: var(--transition);
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .admin-action:hover {
+        transform: translateY(-12px) scale(1.02);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      .icon-box {
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+      }
+
+      .action-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .action-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 768px) {
+        .page-title { font-size: 2.5rem; }
+        .admin-action { width: 100%; max-width: 350px; }
+      }
+
+      .alert {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 16px 24px;
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      }
+
+      .alert-success { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/admin/home" class="logo">
+        <i class="fas fa-shopping-bag"></i>
+        <h1>ShopEase</h1>
+      </a>
+      <a href="/logout" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </nav>
+
+    <!-- Alerts -->
+    <div th:if="${session.pass}" class="alert alert-success">
+      <i class="fas fa-check-circle"></i>
+      <span th:text="${session.pass}"></span>
+    </div>
+    <th:block th:text="${@messageRemover.remove()}"></th:block>
+
+    <div class="container">
+      <header class="page-header">
+        <div class="badge">
+          <i class="fas fa-crown"></i>
+          Super Admin
+        </div>
+        <h1 class="page-title">Admin Command Center</h1>
+      </header>
+
+      <div class="admin-actions">
+        <a href="/admin/products" class="admin-action">
+          <div class="icon-box">
+            <i class="fas fa-clipboard-check"></i>
+          </div>
+          <div class="action-title">Approve Products</div>
+          <p class="action-desc">Review and authorize merchant inventory listings</p>
+        </a>
+
+        <a href="/admin/manage-orders" class="admin-action">
+          <div class="icon-box">
+            <i class="fas fa-truck-fast"></i>
+          </div>
+          <div class="action-title">Manage Orders</div>
+          <p class="action-desc">Oversee customer orders and shipment tracking</p>
+        </a>
+
+        <a href="/admin/overview" class="admin-action">
+          <div class="icon-box">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="action-title">Platform Overview</div>
+          <p class="action-desc">Analyze system metrics and business growth</p>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach((alert) => {
+          setTimeout(() => {
+            alert.style.opacity = "0";
+            setTimeout(() => alert.remove(), 500);
+          }, 3000);
+        });
+      });
+    </script>
+  </body>
+</html>
